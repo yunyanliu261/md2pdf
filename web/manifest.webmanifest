@@ -1,0 +1,20 @@
+{
+  "name": "md2pdf：Markdown 轉 PDF",
+  "short_name": "md2pdf",
+  "description": "將 Markdown 依照網頁（GitHub）顯示的排版轉成 PDF，全部在裝置上處理。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8fa",
+  "theme_color": "#0969da",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "file_handlers": [
+    { "action": "./", "accept": { "text/markdown": [".md", ".markdown"] } }
+  ]
+}

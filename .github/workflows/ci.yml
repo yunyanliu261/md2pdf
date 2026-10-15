@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'claude/**', 'agy/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: '1'
+      - run: npm run install-browser
+      - name: Test (CLI + web app)
+        run: npm test
+        env:
+          # Ubuntu runners restrict unprivileged user namespaces (AppArmor), which Chrome's sandbox needs.
+          MD2PDF_NO_SANDBOX: ${{ runner.os == 'Linux' && '1' || '' }}
+      - name: CLI smoke test
+        run: node bin/md2pdf.mjs test/fixtures/sample.md -o out/sample.pdf -p ${{ runner.os == 'Linux' && '--no-sandbox' || '' }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sample-pdf-${{ matrix.os }}
+          path: out/sample.pdf

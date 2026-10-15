@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { githubSlug, renderHtml } from '../src/render.mjs';
 import { computeScale } from '../src/pdf.mjs';
 
@@ -35,7 +37,8 @@ test('highlights code, math and mermaid', () => {
 });
 
 test('document shell', () => {
-  assert.match(html, /<base href="file:\/\/\/docs\/">/);
+  const base = pathToFileURL(path.resolve('/docs') + path.sep).href; // file:///D:/docs/ on Windows
+  assert.ok(html.includes(`<base href="${base}">`), `missing <base href="${base}">`);
   assert.match(html, /<title>範例文件 Sample<\/title>/);
   assert.match(html, /github-markdown-light\.css/);
   assert.doesNotMatch(renderHtml('plain'), /mermaid\.min\.js/);

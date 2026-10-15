@@ -5,36 +5,9 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import puppeteer from 'puppeteer';
 import { renderHtml } from './render.mjs';
+import { computeScale } from './markdown.mjs';
 
-const PAPER_MM = {
-  A3: [297, 420],
-  A4: [210, 297],
-  A5: [148, 210],
-  Letter: [215.9, 279.4],
-  Legal: [215.9, 355.6],
-};
-const PX_PER_MM = 96 / 25.4;
-
-function marginToMm(value) {
-  const m = /^(\d+(?:\.\d+)?)(mm|cm|in|px)?$/.exec(String(value).trim());
-  if (!m) throw new Error(`Invalid margin: ${value}`);
-  const n = Number(m[1]);
-  return { mm: n, cm: n * 10, in: n * 25.4, px: n / PX_PER_MM }[m[2] ?? 'mm'];
-}
-
-/**
- * Layout the page `width` CSS px wide (like a browser window showing the
- * document), then scale it to fit the printable area, so line breaks and
- * proportions match what you see on the web.
- */
-export function computeScale({ format = 'A4', landscape = false, margin = '15mm', width = 830 }) {
-  if (!width) return 1;
-  const paper = PAPER_MM[format];
-  if (!paper) throw new Error(`Unknown format: ${format} (use ${Object.keys(PAPER_MM).join(', ')})`);
-  const pageMm = landscape ? paper[1] : paper[0];
-  const printablePx = (pageMm - 2 * marginToMm(margin)) * PX_PER_MM;
-  return Math.min(2, Math.max(0.1, printablePx / width));
-}
+export { computeScale };
 
 // Ubuntu 23.10+ blocks Chrome's sandbox via AppArmor; disabling it is opt-in
 // (--no-sandbox / MD2PDF_NO_SANDBOX=1) because pages may contain untrusted HTML.
