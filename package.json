@@ -1,0 +1,52 @@
+{
+  "name": "md2pdf",
+  "version": "1.0.0",
+  "description": "將 Markdown 依照網頁（GitHub）顯示的排版完整轉換為 PDF",
+  "main": "src/pdf.mjs",
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "dev:web": "node scripts/build-web.mjs --serve",
+    "pretest": "npm run build:web",
+    "test": "node --test \"test/*.test.mjs\"",
+    "install-browser": "puppeteer browsers install chrome-headless-shell"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yunyanliu261/md2pdf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/yunyanliu261/md2pdf/issues"
+  },
+  "homepage": "https://github.com/yunyanliu261/md2pdf#readme",
+  "dependencies": {
+    "@vscode/markdown-it-katex": "^1.1.2",
+    "commander": "^15.0.0",
+    "github-markdown-css": "^5.9.0",
+    "highlight.js": "^11.12.0",
+    "jspdf": "^4.2.1",
+    "katex": "^0.19.0",
+    "markdown-it": "^15.0.2",
+    "markdown-it-anchor": "^10.0.0",
+    "markdown-it-emoji": "^3.1.0",
+    "markdown-it-footnote": "^4.0.0",
+    "markdown-it-github-alerts": "^1.0.1",
+    "markdown-it-task-lists": "^2.1.1",
+    "mermaid": "^12.2.0",
+    "modern-screenshot": "^4.7.0",
+    "puppeteer": "^25.14.0"
+  },
+  "bin": {
+    "md2pdf": "bin/md2pdf.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

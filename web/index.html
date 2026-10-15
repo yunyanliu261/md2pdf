@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src 'self' data:; connect-src *; worker-src 'self' blob:">
+<meta name="theme-color" content="#0969da">
+<meta name="description" content="將 Markdown 依照網頁（GitHub）顯示的排版轉成 PDF，全部在裝置上處理，不上傳。">
+<title>md2pdf</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="md-light.css" id="md-light">
+<link rel="stylesheet" href="md-dark.css" id="md-dark" disabled>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<header class="toolbar">
+  <div class="brand"><img src="icons/icon.svg" alt="" width="24" height="24"> md2pdf</div>
+  <div class="actions">
+    <label class="btn" for="file-input">開啟檔案</label>
+    <input id="file-input" type="file" multiple hidden>
+    <button id="export-btn" class="btn primary" type="button">輸出 PDF 檔案</button>
+    <button id="print-btn" class="btn" type="button">列印</button>
+  </div>
+</header>
+
+<details class="settings-panel" id="settings-panel">
+<summary id="settings-summary">輸出設定</summary>
+<form class="settings" id="settings" aria-label="輸出設定">
+  <label>紙張
+    <select name="format">
+      <option value="A4" selected>A4</option>
+      <option value="A3">A3</option>
+      <option value="A5">A5</option>
+      <option value="Letter">Letter</option>
+      <option value="Legal">Legal</option>
+    </select>
+  </label>
+  <label>方向
+    <select name="landscape">
+      <option value="" selected>直向</option>
+      <option value="1">橫向</option>
+    </select>
+  </label>
+  <label>邊距
+    <select name="margin">
+      <option value="10mm">10 mm</option>
+      <option value="15mm" selected>15 mm</option>
+      <option value="20mm">20 mm</option>
+      <option value="25mm">25 mm</option>
+    </select>
+  </label>
+  <label>網頁寬度
+    <select name="width">
+      <option value="680">680 px</option>
+      <option value="830" selected>830 px（GitHub）</option>
+      <option value="980">980 px</option>
+    </select>
+  </label>
+  <label>主題
+    <select name="theme">
+      <option value="light" selected>淺色</option>
+      <option value="dark">深色</option>
+    </select>
+  </label>
+  <label>存檔
+    <select name="saveMode">
+      <option value="ask" selected>每次詢問儲存位置</option>
+      <option value="download">直接存到下載資料夾</option>
+    </select>
+  </label>
+</form>
+</details>
+
+<p id="status" class="status" role="status" aria-live="polite"></p>
+
+<nav class="tabs" aria-label="檢視">
+  <button type="button" data-tab="edit">編輯</button>
+  <button type="button" data-tab="preview" aria-selected="true">預覽</button>
+</nav>
+
+<main class="workspace" data-tab="preview">
+  <section class="editor-pane" aria-label="Markdown 原始碼">
+    <textarea id="editor" spellcheck="false" placeholder="在這裡貼上 Markdown，或按「開啟檔案」、把 .md 檔拖進來"></textarea>
+  </section>
+  <section class="preview-pane" aria-label="預覽">
+    <div id="sheet" class="sheet">
+      <article id="preview" class="markdown-body"></article>
+    </div>
+  </section>
+</main>
+
+<div id="drop-overlay" class="drop-overlay" hidden>放開以開啟 .md 與圖片</div>
+</body>
+</html>
